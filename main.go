@@ -19,10 +19,10 @@ var FS embed.FS
 func main() {
 	go func() {
 		gin.SetMode(gin.ReleaseMode)
-		r := gin.Default()
+		r := gin.Default() // router
 		staticFiles, _ := fs.Sub(FS, "frontend/dist")
-		r.StaticFS("/static", http.FS(staticFiles))
-		r.NoRoute(func(c *gin.Context) {
+		r.StaticFS("/static", http.FS(staticFiles)) // router
+		r.NoRoute(func(c *gin.Context) {            // router
 			path := c.Request.URL.Path
 			if strings.HasPrefix(path, "/static/") {
 				reader, err := staticFiles.Open("index.html")
@@ -41,7 +41,7 @@ func main() {
 		})
 		r.Run(":8080")
 	}()
-	c := make(chan os.Signal, 1)
+	c := make(chan os.Signal, 1) // chSignal
 	signal.Notify(c, os.Interrupt)
 
 	chromePath := "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
